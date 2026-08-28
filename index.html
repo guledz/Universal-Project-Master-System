@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Universal Project Master System — documentation, production, prompts, assets, web development, marketing and version control.">
+<title>Universal Project Master System</title>
+<style>
+:root{
+  --bg:#0b0d10;--panel:#11151a;--panel2:#171c22;--text:#eef2f6;--muted:#9da7b3;
+  --line:#28313b;--accent:#d7a84f;--ok:#5fc98a;--danger:#e97878;--shadow:0 12px 30px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.app{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;overflow:auto;background:#0d1014;border-right:1px solid var(--line);padding:22px 16px}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.logo{width:38px;height:38px;border:1px solid var(--accent);border-radius:10px;display:grid;place-items:center;color:var(--accent);font-weight:800}
+.brand h1{font-size:15px;margin:0}.brand small{color:var(--muted)}
+.nav{display:grid;gap:5px}.nav a{color:var(--muted);text-decoration:none;padding:9px 10px;border-radius:8px}
+.nav a:hover,.nav a.active{background:var(--panel2);color:var(--text)}
+.main{min-width:0}.topbar{position:sticky;top:0;z-index:5;background:rgba(11,13,16,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;gap:10px;justify-content:space-between;align-items:center}
+.topbar .actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:var(--panel);color:var(--text);padding:8px 12px;border-radius:8px}
+.btn:hover{border-color:#526171}.btn.primary{background:var(--accent);border-color:var(--accent);color:#111;font-weight:700}
+.btn.danger{color:#ffaaaa}
+.content{max-width:1200px;margin:auto;padding:28px 24px 80px}
+.hero{background:linear-gradient(135deg,var(--panel),#101318);border:1px solid var(--line);border-radius:16px;padding:28px;box-shadow:var(--shadow);margin-bottom:24px}
+.hero h2{font-size:clamp(28px,4vw,48px);line-height:1.05;margin:0 0 12px}.hero p{color:var(--muted);max-width:800px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:18px 0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
+.card h3{margin:0 0 8px;font-size:16px}.metric{font-size:28px;font-weight:800}.muted{color:var(--muted)}
+section{scroll-margin-top:80px;margin:28px 0}.section-head{display:flex;justify-content:space-between;gap:15px;align-items:end;margin-bottom:12px}
+.section-head h2{margin:0;font-size:22px}.section-head span{color:var(--muted);font-size:12px}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.field{display:grid;gap:6px}.field.full{grid-column:1/-1}
+label{font-weight:650;font-size:13px}.field input,.field textarea,.field select{
+width:100%;background:#0c1014;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:10px 11px;outline:none
+}.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--accent)}
+textarea{min-height:100px;resize:vertical}
+table{width:100%;border-collapse:collapse;min-width:650px}th,td{border-bottom:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}th{color:var(--muted);font-size:12px;text-transform:uppercase}
+.table-wrap{overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:4px}
+.checklist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.check{display:flex;gap:9px;align-items:flex-start;background:#0d1115;border:1px solid var(--line);padding:9px;border-radius:8px}.check input{margin-top:4px}
+pre{background:#080a0d;border:1px solid var(--line);padding:14px;border-radius:10px;overflow:auto;color:#d9e2ec}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.status{display:inline-flex;padding:4px 8px;border-radius:999px;background:#18221d;color:var(--ok);font-size:12px}
+.footer{margin-top:40px;color:var(--muted);text-align:center;font-size:12px}
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:12px}.nav{display:flex;overflow:auto}.nav a{white-space:nowrap}.grid{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.content{padding:18px 12px 60px}.topbar{padding:10px 12px}.form-grid,.grid,.checklist{grid-template-columns:1fr}.hero{padding:20px}.topbar .title{display:none}.btn{padding:8px 9px}}
+@media print{
+ body{background:white;color:black}.sidebar,.topbar,.no-print{display:none!important}.main{display:block}.content{max-width:none;padding:0}
+ .card,.hero,.table-wrap,.field input,.field textarea,.field select{background:white;color:black;border:1px solid #aaa;box-shadow:none}
+ section{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="logo">PM</div><div><h1>PROJECT MASTER</h1><small>Documentation System</small></div></div>
+  <nav class="nav" id="nav"></nav>
+</aside>
+<main class="main">
+  <div class="topbar no-print">
+    <strong class="title">Universal Project Master System</strong>
+    <div class="actions">
+      <button class="btn" onclick="window.print()">Print / PDF</button>
+      <button class="btn" onclick="exportJSON()">Export JSON</button>
+      <button class="btn" onclick="importJSON()">Import JSON</button>
+      <button class="btn primary" onclick="saveAll()">Save</button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="hero">
+      <h2>One system for any project.</h2>
+      <p>Plan, research, design, generate, develop, market, test, approve, publish and archive projects without losing the methods, prompts, decisions or assets that created them.</p>
+      <div class="toolbar no-print">
+        <button class="btn primary" onclick="saveAll()">Save Project</button>
+        <button class="btn" onclick="resetForm()">New / Reset</button>
+        <span id="saveState" class="status">Local draft</span>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card"><div class="muted">Project</div><div class="metric" id="metricProject">Untitled</div></div>
+      <div class="card"><div class="muted">Version</div><div class="metric" id="metricVersion">V0.1</div></div>
+      <div class="card"><div class="muted">Status</div><div class="metric" id="metricStatus">Draft</div></div>
+    </div>
+
+    <section id="control">
+      <div class="section-head"><h2>00 — Project Control</h2><span>Identity, scope and status</span></div>
+      <div class="card form-grid">
+        <div class="field"><label>Project Name</label><input data-key="projectName" placeholder="e.g. ODAA Product System"></div>
+        <div class="field"><label>Project ID</label><input data-key="projectId" placeholder="PRJ-001"></div>
+        <div class="field"><label>Client / Brand</label><input data-key="clientBrand"></div>
+        <div class="field"><label>Project Type</label><input data-key="projectType" placeholder="Brand / Product / Web / Campaign / Other"></div>
+        <div class="field"><label>Owner</label><input data-key="owner"></div>
+        <div class="field"><label>Start Date</label><input type="date" data-key="startDate"></div>
+        <div class="field"><label>Current Version</label><input data-key="version" value="V0.1"></div>
+        <div class="field"><label>Status</label><select data-key="status"><option>Draft</option><option>Active</option><option>Review</option><option>Approved</option><option>Published</option><option>Paused</option><option>Archived</option></select></div>
+        <div class="field full"><label>What is this project?</label><textarea data-key="overview"></textarea></div>
+        <div class="field full"><label>Why does it exist?</label><textarea data-key="why"></textarea></div>
+        <div class="field full"><label>Problem it solves</label><textarea data-key="problem"></textarea></div>
+        <div class="field full"><label>Desired outcome</label><textarea data-key="outcome"></textarea></div>
+        <div class="field full"><label>Target audience</label><textarea data-key="audience"></textarea></div>
+        <div class="field"><label>Primary Objective</label><textarea data-key="primaryObjective"></textarea></div>
+        <div class="field"><label>Next Action</label><textarea data-key="nextAction"></textarea></div>
+        <div class="field"><label>Blockers</label><textarea data-key="blockers"></textarea></div>
+        <div class="field"><label>Target Completion</label><input type="date" data-key="targetDate"></div>
+      </div>
+    </section>
+
+    <section id="research">
+      <div class="section-head"><h2>01 — Research</h2><span>Evidence before creation</span></div>
+      <div class="card form-grid">
+        <div class="field full"><label>Research Questions</label><textarea data-key="researchQuestions"></textarea></div>
+        <div class="field"><label>Market / Industry Research</label><textarea data-key="marketResearch"></textarea></div>
+        <div class="field"><label>Audience Research</label><textarea data-key="audienceResearch"></textarea></div>
+        <div class="field"><label>Competitors / References</label><textarea data-key="competitorResearch"></textarea></div>
+        <div class="field"><label>Cultural / Context Research</label><textarea data-key="contextResearch"></textarea></div>
+        <div class="field full"><label>Key Findings</label><textarea data-key="keyFindings"></textarea></div>
+        <div class="field full"><label>Sources & References</label><textarea data-key="sources"></textarea></div>
+      </div>
+    </section>
+
+    <section id="strategy">
+      <div class="section-head"><h2>02 — Strategy</h2><span>Direction and decision framework</span></div>
+      <div class="card form-grid">
+        <div class="field"><label>Core Problem</label><textarea data-key="coreProblem"></textarea></div>
+        <div class="field"><label>Opportunity</label><textarea data-key="opportunity"></textarea></div>
+        <div class="field"><label>Proposed Solution</label><textarea data-key="solution"></textarea></div>
+        <div class="field"><label>Positioning</label><textarea data-key="positioning"></textarea></div>
+        <div class="field"><label>Value Proposition</label><textarea data-key="valueProposition"></textarea></div>
+        <div class="field"><label>Competitive Advantage</label><textarea data-key="advantage"></textarea></div>
+        <div class="field full"><label>Strategy</label><textarea data-key="strategy"></textarea></div>
+      </div>
+    </section>
+
+    <section id="concept">
+      <div class="section-head"><h2>03 — Concept Development</h2><span>From idea to selected direction</span></div>
+      <div class="card form-grid">
+        <div class="field"><label>Initial Idea</label><textarea data-key="initialIdea"></textarea></div>
+        <div class="field"><label>Concept</label><textarea data-key="concept"></textarea></div>
+        <div class="field"><label>Concept Explanation</label><textarea data-key="conceptExplanation"></textarea></div>
+        <div class="field"><label>Inspiration</label><textarea data-key="inspiration"></textarea></div>
+        <div class="field full"><label>Creative Direction</label><textarea data-key="creativeDirection"></textarea></div>
+        <div class="field"><label>Alternative Concept A</label><textarea data-key="conceptA"></textarea></div>
+        <div class="field"><label>Alternative Concept B</label><textarea data-key="conceptB"></textarea></div>
+        <div class="field"><label>Alternative Concept C</label><textarea data-key="conceptC"></textarea></div>
+        <div class="field full"><label>Selected Concept + Reason</label><textarea data-key="selectedConcept"></textarea></div>
+      </div>
+    </section>
+
+    <section id="brand">
+      <div class="section-head"><h2>04 — Brand / Visual System</h2><span>Identity and visual rules</span></div>
+      <div class="card form-grid">
+        <div class="field"><label>Brand Name</label><input data-key="brandName"></div>
+        <div class="field"><label>Logo / Symbol</label><textarea data-key="logo"></textarea></div>
+        <div class="field"><label>Typography</label><textarea data-key="typography"></textarea></div>
+        <div class="field"><label>Visual Language</label><textarea data-key="visualLanguage"></textarea></div>
+        <div class="field"><label>Photography / Image Style</label><textarea data-key="photoStyle"></textarea></div>
+        <div class="field"><label>Graphic Style</label><textarea data-key="graphicStyle"></textarea></div>
+        <div class="field full"><label>Color System</label><textarea data-key="colors" placeholder="Name — HEX — usage, one per line"></textarea></div>
+        <div class="field"><label>DO Rules</label><textarea data-key="brandDo"></textarea></div>
+        <div class="field"><label>DON'T Rules</label><textarea data-key="brandDont"></textarea></div>
+      </div>
+    </section>
+
+    <section id="product">
+      <div class="section-head"><h2>05 — Product / Service Development</h2><span>Specification and production record</span></div>
+      <div class="card form-grid">
+        <div class="field"><label>Product / Service Name</label><input data-key="productName"></div>
+        <div class="field"><label>Product ID</label><input data-key="productId"></div>
+        <div class="field"><label>Category</label><input data-key="category"></div>
+        <div class="field"><label>Purpose</label><textarea data-key="purpose"></textarea></div>
+        <div class="field full"><label>Description</label><textarea data-key="productDescription"></textarea></div>
+        <div class="field"><label>Features</label><textarea data-key="features"></textarea></div>
+        <div class="field"><label>Materials / Technology</label><textarea data-key="materials"></textarea></div>
+        <div class="field"><label>Dimensions / Technical Specs</label><textarea data-key="dimensions"></textarea></div>
+        <div class="field"><label>Variations</label><textarea data-key="variations"></textarea></div>
+        <div class="field full"><label>Production Requirements</label><textarea data-key="productionRequirements"></textarea></div>
+      </div>
+    </section>
+
+    <section id="prompts">
+      <div class="section-head"><h2>06 — AI / Prompt System</h2><span>Reusable intelligence</span></div>
+      <div class="card form-grid">
+        <div class="field"><label>Master Prompt ID</label><input data-key="masterPromptId"></div>
+        <div class="field"><label>Prompt Version</label><input data-key="promptVersion" value="V1.0"></div>
+        <div class="field full"><label>Master Prompt</label><textarea data-key="masterPrompt"></textarea></div>
+        <div class="field"><label>Project / Product Prompt</label><textarea data-key="projectPrompt"></textarea></div>
+        <div class="field"><label>Image Generation Prompt</label><textarea data-key="imagePrompt"></textarea></div>
+        <div class="field"><label>Video / Image-to-Video Prompt</label><textarea data-key="videoPrompt"></textarea></div>
+        <div class="field"><label>Negative Prompt</label><textarea data-key="negativePrompt"></textarea></div>
+        <div class="field full"><label>Prompt Variables</label><textarea data-key="promptVariables" placeholder="{PROJECT_NAME}&#10;{PRODUCT_NAME}&#10;{COLOR}&#10;{MATERIAL}&#10;{LOGO}&#10;{BACKGROUND}&#10;{MODEL}&#10;{CAMERA}&#10;{LIGHTING}&#10;{STYLE}"></textarea></div>
+      </div>
+    </section>
+
+    <section id="images">
+      <div class="section-head"><h2>07 — Image / Visual Production</h2><span>Standardized asset package</span></div>
+      <div class="card">
+        <div class="checklist">
+          <label class="check"><input type="checkbox" data-key="imgHero"> Hero</label>
+          <label class="check"><input type="checkbox" data-key="imgFront"> Front</label>
+          <label class="check"><input type="checkbox" data-key="img45"> 45° Side</label>
+          <label class="check"><input type="checkbox" data-key="imgSide"> Side</label>
+          <label class="check"><input type="checkbox" data-key="imgRear"> Rear</label>
+          <label class="check"><input type="checkbox" data-key="imgModel"> Modeling</label>
+          <label class="check"><input type="checkbox" data-key="imgDetail"> Detail</label>
+          <label class="check"><input type="checkbox" data-key="imgLogo"> Logo Detail</label>
+          <label class="check"><input type="checkbox" data-key="imgLifestyle"> Lifestyle</label>
+          <label class="check"><input type="checkbox" data-key="imgProduction"> Production / Construction</label>
+          <label class="check"><input type="checkbox" data-key="imgMarketing"> Marketing</label>
+        </div>
+        <div class="form-grid" style="margin-top:14px">
+          <div class="field"><label>Aspect Ratio</label><input data-key="imageAspectRatio" placeholder="16:9, 1:1, 4:5..."></div>
+          <div class="field"><label>Resolution</label><input data-key="imageResolution"></div>
+          <div class="field"><label>Format</label><input data-key="imageFormat" value="WEBP"></div>
+          <div class="field"><label>Background / Lighting</label><textarea data-key="imageEnvironment"></textarea></div>
+          <div class="field full"><label>Asset Naming Convention</label><input data-key="assetNaming" value="PROJECT_CATEGORY_ITEM_VERSION.ext"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="web">
+      <div class="section-head"><h2>08 — Website / Digital Development</h2><span>Build once, reuse systematically</span></div>
+      <div class="card form-grid">
+        <div class="field"><label>Platform / Hosting</label><input data-key="platform"></div>
+        <div class="field"><label>Development Stack</label><input data-key="stack" placeholder="HTML / CSS / JS / Framework"></div>
+        <div class="field full"><label>Website Objective</label><textarea data-key="webObjective"></textarea></div>
+        <div class="field full"><label>Sitemap</label><textarea data-key="sitemap"></textarea></div>
+        <div class="field full"><label>Page Structure</label><textarea data-key="pageStructure" placeholder="Hero&#10;Introduction&#10;Features&#10;Story&#10;Gallery&#10;CTA"></textarea></div>
+        <div class="field"><label>Product URL / Route</label><input data-key="productUrl"></div>
+        <div class="field"><label>Mobile / Responsive Requirements</label><textarea data-key="responsive"></textarea></div>
+        <div class="field full"><label>Development Notes</label><textarea data-key="devNotes"></textarea></div>
+      </div>
+      <div class="card" style="margin-top:12px">
+        <h3>Web QA</h3>
+        <div class="checklist">
+          <label class="check"><input type="checkbox" data-key="qaNav"> Navigation</label>
+          <label class="check"><input type="checkbox" data-key="qaImages"> Images</label>
+          <label class="check"><input type="checkbox" data-key="qaButtons"> Buttons</label>
+          <label class="check"><input type="checkbox" data-key="qaForms"> Forms</label>
+          <label class="check"><input type="checkbox" data-key="qaMobile"> Mobile</label>
+          <label class="check"><input type="checkbox" data-key="qaPerformance"> Performance</label>
+          <label class="check"><input type="checkbox" data-key="qaSEO"> SEO</label>
+          <label class="check"><input type="checkbox" data-key="qaAccessibility"> Accessibility</label>
+        </div>
+      </div>
+    </section>
+
+    <section id="content">
+      <div class="section-head"><h2>09 — Content System</h2><span>Reusable project messaging</span></div>
+      <div class="card form-grid">
+        <div class="field full"><label>Core Story</label><textarea data-key="coreStory"></textarea></div>
+        <div class="field"><label>Product Description</label><textarea data-key="contentDescription"></textarea></div>
+        <div class="field"><label>Short Description</label><textarea data-key="shortDescription"></textarea></div>
+        <div class="field"><label>Technical Description</label><textarea data-key="technicalDescription"></textarea></div>
+        <div class="field"><label>Brand Story</label><textarea data-key="brandStory"></textarea></div>
+        <div class="field full"><label>Key Messages</label><textarea data-key="keyMessages"></textarea></div>
+        <div class="field"><label>SEO Title</label><input data-key="seoTitle"></div>
+        <div class="field"><label>Meta Description</label><textarea data-key="metaDescription"></textarea></div>
+        <div class="field"><label>Keywords</label><textarea data-key="keywords"></textarea></div>
+        <div class="field"><label>URL Slug</label><input data-key="slug"></div>
+      </div>
+    </section>
+
+    <section id="marketing">
+      <div class="section-head"><h2>10 — Marketing</h2><span>Problem → Solution → Product</span></div>
+      <div class="card form-grid">
+        <div class="field full"><label>Marketing Objective</label><textarea data-key="marketingObjective"></textarea></div>
+        <div class="field full"><label>Campaign Concept</label><textarea data-key="campaignConcept"></textarea></div>
+        <div class="field"><label>Problem</label><textarea data-key="marketingProblem"></textarea></div>
+        <div class="field"><label>Solution</label><textarea data-key="marketingSolution"></textarea></div>
+        <div class="field"><label>Product / Offer</label><textarea data-key="marketingProduct"></textarea></div>
+        <div class="field"><label>Why It Matters</label><textarea data-key="whyMatters"></textarea></div>
+        <div class="field"><label>Platforms</label><textarea data-key="platforms" placeholder="LinkedIn, Instagram, Pinterest..."></textarea></div>
+        <div class="field"><label>Content Types</label><textarea data-key="contentTypes"></textarea></div>
+        <div class="field full"><label>Campaign Assets / Publication Plan</label><textarea data-key="campaignAssets"></textarea></div>
+      </div>
+    </section>
+
+    <section id="qa">
+      <div class="section-head"><h2>11 — Testing & Quality Control</h2><span>Do not publish unverified work</span></div>
+      <div class="card">
+        <h3>Design QA</h3>
+        <div class="checklist">
+          <label class="check"><input type="checkbox" data-key="designLogo"> Correct logo</label>
+          <label class="check"><input type="checkbox" data-key="designColors"> Correct colors</label>
+          <label class="check"><input type="checkbox" data-key="designProportions"> Correct proportions</label>
+          <label class="check"><input type="checkbox" data-key="designType"> Correct typography</label>
+          <label class="check"><input type="checkbox" data-key="designConsistency"> Consistent visual system</label>
+        </div>
+        <h3 style="margin-top:18px">Product / Image QA</h3>
+        <div class="checklist">
+          <label class="check"><input type="checkbox" data-key="productSpecs"> Specifications verified</label>
+          <label class="check"><input type="checkbox" data-key="productDimensions"> Dimensions verified</label>
+          <label class="check"><input type="checkbox" data-key="productMaterials"> Materials verified</label>
+          <label class="check"><input type="checkbox" data-key="imageLogoQA"> Logo correct</label>
+          <label class="check"><input type="checkbox" data-key="imagePerspective"> Perspective correct</label>
+          <label class="check"><input type="checkbox" data-key="imageLighting"> Lighting correct</label>
+          <label class="check"><input type="checkbox" data-key="imageResolutionQA"> Resolution correct</label>
+        </div>
+        <div class="field" style="margin-top:14px"><label>QA Notes</label><textarea data-key="qaNotes"></textarea></div>
+      </div>
+    </section>
+
+    <section id="approval">
+      <div class="section-head"><h2>12 — Approval</h2><span>Gate before publishing</span></div>
+      <div class="card table-wrap">
+        <table><thead><tr><th>Area</th><th>Status</th><th>Notes</th></tr></thead><tbody>
+          <tr><td>Concept</td><td><select data-key="approveConcept"><option>Pending</option><option>Approved</option><option>Revision</option><option>Rejected</option></select></td><td><input data-key="approveConceptNotes"></td></tr>
+          <tr><td>Design</td><td><select data-key="approveDesign"><option>Pending</option><option>Approved</option><option>Revision</option><option>Rejected</option></select></td><td><input data-key="approveDesignNotes"></td></tr>
+          <tr><td>Product / Service</td><td><select data-key="approveProduct"><option>Pending</option><option>Approved</option><option>Revision</option><option>Rejected</option></select></td><td><input data-key="approveProductNotes"></td></tr>
+          <tr><td>Images</td><td><select data-key="approveImages"><option>Pending</option><option>Approved</option><option>Revision</option><option>Rejected</option></select></td><td><input data-key="approveImagesNotes"></td></tr>
+          <tr><td>Website</td><td><select data-key="approveWebsite"><option>Pending</option><option>Approved</option><option>Revision</option><option>Rejected</option></select></td><td><input data-key="approveWebsiteNotes"></td></tr>
+          <tr><td>Marketing</td><td><select data-key="approveMarketing"><option>Pending</option><option>Approved</option><option>Revision</option><option>Rejected</option></select></td><td><input data-key="approveMarketingNotes"></td></tr>
+        </tbody></table>
+      </div>
+    </section>
+
+    <section id="logs">
+      <div class="section-head"><h2>13–15 — Version, Decision & Change Logs</h2><span>Project memory</span></div>
+      <div class="card form-grid">
+        <div class="field full"><label>Version History</label><textarea data-key="versionHistory" placeholder="V0.1 — Initial concept — date — status&#10;V0.5 — Working version...&#10;V1.0 — Approved..."></textarea></div>
+        <div class="field"><label>Decision Log</label><textarea data-key="decisionLog" placeholder="D001 — Date — Decision — Reason — Impact"></textarea></div>
+        <div class="field"><label>Change Log</label><textarea data-key="changeLog" placeholder="C001 — Date — Change — Requested by — Status"></textarea></div>
+      </div>
+    </section>
+
+    <section id="assets">
+      <div class="section-head"><h2>16 — File & Asset System</h2><span>Keep everything findable</span></div>
+      <div class="card">
+<pre>PROJECT_NAME/
+├── 00_MASTER
+├── 01_RESEARCH
+├── 02_STRATEGY
+├── 03_CONCEPT
+├── 04_BRAND
+├── 05_PRODUCT
+├── 06_PROMPTS
+├── 07_IMAGES
+├── 08_WEBSITE
+├── 09_CONTENT
+├── 10_MARKETING
+├── 11_DOCUMENTATION
+├── 12_FINAL
+└── 99_ARCHIVE</pre>
+        <div class="form-grid">
+          <div class="field"><label>Master File Location</label><input data-key="masterLocation"></div>
+          <div class="field"><label>Final Assets Location</label><input data-key="finalLocation"></div>
+          <div class="field full"><label>File Naming Rules</label><textarea data-key="fileNamingRules">PROJECT_CATEGORY_ITEM_VERSION.ext</textarea></div>
+          <div class="field full"><label>Asset Register</label><textarea data-key="assetRegister" placeholder="Asset ID — filename — type — version — status — location"></textarea></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sop">
+      <div class="section-head"><h2>17 — SOP / Method</h2><span>Turn successful work into reusable knowledge</span></div>
+      <div class="card form-grid">
+        <div class="field full"><label>Method Used</label><textarea data-key="methodUsed"></textarea></div>
+        <div class="field full"><label>Step-by-Step Process</label><textarea data-key="processSteps" placeholder="01 → Research&#10;02 → Strategy&#10;03 → Concept..."></textarea></div>
+        <div class="field"><label>What Worked?</label><textarea data-key="worked"></textarea></div>
+        <div class="field"><label>What Failed?</label><textarea data-key="failed"></textarea></div>
+        <div class="field"><label>What Should Improve?</label><textarea data-key="improve"></textarea></div>
+        <div class="field"><label>SOP ID</label><input data-key="sopId"></div>
+        <div class="field full"><label>Reusable Method / SOP</label><textarea data-key="sop"></textarea></div>
+      </div>
+    </section>
+
+    <section id="lessons">
+      <div class="section-head"><h2>18 — Lessons Learned</h2><span>Convert experience into capability</span></div>
+      <div class="card form-grid">
+        <div class="field"><label>What Did We Learn?</label><textarea data-key="lessons"></textarea></div>
+        <div class="field"><label>Mistakes</label><textarea data-key="mistakes"></textarea></div>
+        <div class="field"><label>Improvements</label><textarea data-key="improvements"></textarea></div>
+        <div class="field"><label>Reusable Knowledge</label><textarea data-key="reusableKnowledge"></textarea></div>
+      </div>
+    </section>
+
+    <section id="final">
+      <div class="section-head"><h2>19–20 — Final Record & Archive</h2><span>Close the loop</span></div>
+      <div class="card form-grid">
+        <div class="field"><label>Final Objective</label><textarea data-key="finalObjective"></textarea></div>
+        <div class="field"><label>Final Solution</label><textarea data-key="finalSolution"></textarea></div>
+        <div class="field"><label>Final Result</label><textarea data-key="finalResult"></textarea></div>
+        <div class="field"><label>Final Version</label><input data-key="finalVersion"></div>
+        <div class="field"><label>Published Location</label><input data-key="publishedLocation"></div>
+        <div class="field"><label>Completion Date</label><input type="date" data-key="completionDate"></div>
+        <div class="field full"><label>Final Assets / Documentation</label><textarea data-key="finalAssets"></textarea></div>
+        <div class="field"><label>Archive Location</label><input data-key="archiveLocation"></div>
+        <div class="field"><label>Archive Date</label><input type="date" data-key="archiveDate"></div>
+        <div class="field full"><label>Final Notes</label><textarea data-key="finalNotes"></textarea></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="hero">
+        <h2 style="font-size:26px">The Master Principle</h2>
+        <p><strong>If it was created, document it.</strong><br>
+        If it was decided, record it.<br>
+        If it was tested, capture the result.<br>
+        If it worked, turn it into a method.<br>
+        If the method is reusable, turn it into an SOP.</p>
+        <pre>IDEA → RESEARCH → STRATEGY → CONCEPT → DESIGN → PRODUCT/SERVICE
+→ AI/PROMPTS → VISUALS → WEB → CONTENT → MARKETING
+→ TEST → APPROVE → PUBLISH → DOCUMENT → ARCHIVE → REUSE</pre>
+      </div>
+    </section>
+    <div class="footer">Universal Project Master System • Browser-local draft • Export JSON to preserve a portable project record.</div>
+  </div>
+</main>
+</div>
+
+<script>
+const sections = [
+ ['control','00 Project Control'],['research','01 Research'],['strategy','02 Strategy'],['concept','03 Concept'],
+ ['brand','04 Brand / Visual'],['product','05 Product / Service'],['prompts','06 AI / Prompts'],
+ ['images','07 Image Production'],['web','08 Web Development'],['content','09 Content'],['marketing','10 Marketing'],
+ ['qa','11 Testing / QA'],['approval','12 Approval'],['logs','13–15 Logs'],['assets','16 Assets'],
+ ['sop','17 SOP / Method'],['lessons','18 Lessons'],['final','19–20 Final / Archive']
+];
+const nav=document.getElementById('nav');
+sections.forEach(([id,label])=>{const a=document.createElement('a');a.href='#'+id;a.textContent=label;nav.appendChild(a)});
+
+const fields=[...document.querySelectorAll('[data-key]')];
+function collect(){
+ const data={};
+ fields.forEach(el=>{data[el.dataset.key]=el.type==='checkbox'?el.checked:el.value});
+ data._meta={savedAt:new Date().toISOString(),schema:'Universal Project Master System v1.0'};
+ return data;
+}
+function apply(data){
+ fields.forEach(el=>{
+   if(!(el.dataset.key in data)) return;
+   if(el.type==='checkbox') el.checked=!!data[el.dataset.key];
+   else el.value=data[el.dataset.key] ?? '';
+ });
+ updateMetrics();
+}
+function saveAll(){
+ const data=collect(); localStorage.setItem('universalProjectMaster',JSON.stringify(data));
+ document.getElementById('saveState').textContent='Saved '+new Date().toLocaleTimeString();
+}
+function load(){
+ try{const raw=localStorage.getItem('universalProjectMaster');if(raw)apply(JSON.parse(raw));}catch(e){console.warn(e)}
+ updateMetrics();
+}
+function exportJSON(){
+ const blob=new Blob([JSON.stringify(collect(),null,2)],{type:'application/json'});
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+ const name=(document.querySelector('[data-key="projectName"]').value||'project-master').replace(/[^a-z0-9-_]+/gi,'-').toLowerCase();
+ a.download=name+'.json';a.click();URL.revokeObjectURL(a.href);
+}
+function importJSON(){
+ const input=document.createElement('input');input.type='file';input.accept='.json,application/json';
+ input.onchange=()=>{const f=input.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{apply(JSON.parse(r.result));saveAll()}catch(e){alert('Invalid project JSON file.')}};r.readAsText(f)};input.click();
+}
+function resetForm(){
+ if(!confirm('Start a new project? This clears the current browser draft.'))return;
+ fields.forEach(el=>{if(el.type==='checkbox')el.checked=false;else if(el.tagName==='SELECT')el.selectedIndex=0;else el.value=''});
+ document.querySelector('[data-key="version"]').value='V0.1';
+ document.querySelector('[data-key="promptVersion"]').value='V1.0';
+ document.querySelector('[data-key="imageFormat"]').value='WEBP';
+ localStorage.removeItem('universalProjectMaster');updateMetrics();
+ document.getElementById('saveState').textContent='New draft';
+}
+function updateMetrics(){
+ document.getElementById('metricProject').textContent=document.querySelector('[data-key="projectName"]').value||'Untitled';
+ document.getElementById('metricVersion').textContent=document.querySelector('[data-key="version"]').value||'V0.1';
+ document.getElementById('metricStatus').textContent=document.querySelector('[data-key="status"]').value||'Draft';
+}
+fields.forEach(el=>el.addEventListener('input',updateMetrics));
+load();
+
+const observer=new IntersectionObserver(entries=>{
+ entries.forEach(e=>{if(e.isIntersecting){
+   document.querySelectorAll('.nav a').forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id));
+ }});
+},{rootMargin:'-25% 0px -65% 0px'});
+document.querySelectorAll('section[id]').forEach(s=>observer.observe(s));
+</script>
+</body>
+</html>
